@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--映射文件要与相对应的mapper接口通过namespace属性进行关联-->
+<mapper namespace="com.paas.app.dao.StudentDao">
+
+    <resultMap id="studentMap" type="com.paas.app.entity.Student">
+        <id property="id" column="id" jdbcType="BIGINT"/>
+        <result property="studentName" column="name" jdbcType="VARCHAR"/>
+        <result property="gender" column="gender" jdbcType="VARCHAR"/>
+        <result property="phone" column="phone" jdbcType="VARCHAR"/>
+        <result property="createTime" column="create_time" jdbcType="DATE"/>
+    </resultMap>
+
+    <!--查询学生-->
+    <select id="queryStudentById" resultMap="studentMap">
+        select id, name, gender,phone, create_time from tb_student where id = #{studentId}
+    </select>
+
+</mapper>
