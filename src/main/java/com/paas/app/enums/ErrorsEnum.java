@@ -2,6 +2,7 @@ package com.paas.app.enums;
 
 /**
  * 可以在这里定义自己的错误类型
+ * @Author 张书根
  */
 
 public enum ErrorsEnum {

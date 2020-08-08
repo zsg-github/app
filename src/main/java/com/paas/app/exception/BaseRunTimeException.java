@@ -10,6 +10,7 @@ import java.io.Serializable;
  * 本类是非受检异常的基类，所有需要隐藏受检异的处常理逻辑异常类，需要继承本类
  * 上层代码最好使用Exception统一捕获非受检异常类
  * 非受检异常类统一错误码：1001：系统内部错误
+ * @Author 张书根
  */
 public class BaseRunTimeException extends RuntimeException implements Serializable {
 

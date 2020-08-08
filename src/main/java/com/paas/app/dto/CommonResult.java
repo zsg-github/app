@@ -38,6 +38,7 @@ public class CommonResult {
      *
      * @param key
      * @param obj
+     * @author 张书根
      */
     public void addAttribute(String key, Object obj) {
         data.put(key, obj);
@@ -46,7 +47,7 @@ public class CommonResult {
     /**
      * 获得属性
      * ArrayList<Map<String, Object>> totalList = (ArrayList<Map<String, Object>>) resultSoaRest.getAttribute("totalList");
-     *
+     * @author 张书根
      */
     public Object getAttribute(String key) {
         return data.get(key);

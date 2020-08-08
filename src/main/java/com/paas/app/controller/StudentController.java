@@ -5,13 +5,20 @@ import com.paas.app.dto.CommonResult;
 import com.paas.app.enums.ErrorsEnum;
 import com.paas.app.exception.BusinessException;
 import com.paas.app.service.StudentService;
+import com.paas.app.util.ResolvingExcelUtil;
+import com.paas.app.util.UploadExcelUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.File;
 
 @RestController
 @RequestMapping("/admin")
@@ -41,6 +48,18 @@ public class StudentController {
             result.setMessage("系统内部错误");
         }
         return result;
+    }
+
+    @RequestMapping(value = "/uploadFile", method = RequestMethod.POST)
+    public void uploadFile(@RequestParam(value = "fileinfo", required = false) MultipartFile file, HttpServletRequest request, HttpServletResponse response) {
+        String path = UploadExcelUtil.getFileInfo(request, response, file);
+    }
+
+    @RequestMapping(value = "/resolveExcel", method = RequestMethod.POST)
+    public void resolveExcel(@RequestParam(value = "fileinfo", required = false) MultipartFile file, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        String path= UploadExcelUtil.getFileInfo(request, response, file);
+        File file1=new File(path);
+        ResolvingExcelUtil.analysisFile((MultipartFile) file1);
     }
 
 
