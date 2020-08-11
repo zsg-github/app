@@ -18,4 +18,8 @@
         select id, name, gender,phone, create_time from tb_student where id = #{studentId}
     </select>
 
+   <select id="queryAllStudent" resultMap="studentMap">
+       select id, name, gender,phone, create_time from tb_student
+   </select>
+
 </mapper>

@@ -1,12 +1,16 @@
 package com.paas.app.controller;
 
-
 import com.paas.app.dto.CommonResult;
+import com.paas.app.entity.Student;
 import com.paas.app.enums.ErrorsEnum;
 import com.paas.app.exception.BusinessException;
 import com.paas.app.service.StudentService;
 import com.paas.app.util.ResolvingExcelUtil;
 import com.paas.app.util.UploadExcelUtil;
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,6 +23,12 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+
+import static java.time.format.DateTimeFormatter.ofPattern;
 
 @RestController
 @RequestMapping("/admin")
@@ -61,6 +71,32 @@ public class StudentController {
         File file1=new File(path);
         ResolvingExcelUtil.analysisFile((MultipartFile) file1);
     }
+
+    @RequestMapping(value = "/getExcel", method = RequestMethod.POST)
+    private CommonResult getExcel(){
+        CommonResult result;
+        try {
+            result = studentService.queryAllStudent();
+        } catch (BusinessException e) {
+            logger.error("/admin/getStudentInfoBy 异常，异常原因：" + e);
+            e.printStackTrace();
+            result = new CommonResult();
+            result.setState(Integer.parseInt(e.getErrCode()));
+            result.setSuccess(false);
+            result.setMessage(e.getMessage());
+        } catch (Exception e) {
+            logger.error("/admin/getStudentInfoBy 底层处理异常，异常原因", e.getMessage());
+            e.printStackTrace();
+            result = new CommonResult();
+            result.setState(ErrorsEnum.COMMON_ERROR.getErrorCode());
+            result.setSuccess(false);
+            result.setMessage("系统内部错误");
+        }
+        return result;
+
+
+    }
+
 
 
 
