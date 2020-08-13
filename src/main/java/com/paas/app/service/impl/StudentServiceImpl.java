@@ -16,12 +16,16 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import sun.util.calendar.BaseCalendar;
+import sun.util.calendar.LocalGregorianCalendar;
 
 import javax.annotation.Resource;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -82,7 +86,7 @@ public class StudentServiceImpl implements StudentService {
         for (int i = 0; i < arrayList.size(); i++) {
             HSSFRow row1 = sheet.createRow(i + 1);
             //创建单元格设值
-            row1.createCell(0).setCellValue(arrayList.get(i).getId());
+            row1.createCell(0).setCellValue(arrayList.get(i).getEmployeeId());
             row1.createCell(1).setCellValue(arrayList.get(i).getEmployeeName());
             row1.createCell(2).setCellValue(arrayList.get(i).getGroup());
             row1.createCell(3).setCellValue(arrayList.get(i).getPost());
@@ -91,7 +95,11 @@ public class StudentServiceImpl implements StudentService {
             row1.createCell(6).setCellValue(arrayList.get(i).getBankAccount());
         }
         //将文件保存到指定的位置
-        String path = "/usr/local/excel/employee.xls";
+        Calendar now = Calendar.getInstance();
+        String flag = now.get(Calendar.DAY_OF_MONTH) +"" + now.get(Calendar.HOUR_OF_DAY) + "" + now.get(Calendar.MINUTE) + "" + now.get(Calendar.SECOND);
+        String path = "/www/server/tomcat/webapps/excel/employee" + flag + ".xls";
+        String url = "http:121.41.228.122:8080/excel/employee" + flag + ".xls";
+        //String p = "D:/emp.xls";
         try {
             FileOutputStream fos = new FileOutputStream(path);
             workbook.write(fos);
@@ -107,9 +115,7 @@ public class StudentServiceImpl implements StudentService {
         resultModel.setState(ErrorsEnum.SUCCESS.getErrorCode());
         resultModel.setSuccess(true);
         resultModel.setMessage(ErrorsEnum.SUCCESS.getMessage());
-        resultModel.addAttribute("filePath", path);
+        resultModel.addAttribute("downLoadPath", url);
         return resultModel;
-
-
     }
 }

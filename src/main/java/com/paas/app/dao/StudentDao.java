@@ -12,7 +12,7 @@ public interface StudentDao {
 
     Student queryStudentById(@Param("studentId") int studentId);
 
-    ArrayList<Student> queryAllStudent();
 
     ArrayList<Employee> queryAllEmployee();
+
 }

@@ -13,6 +13,22 @@
         <result property="createTime" column="create_time" jdbcType="DATE"/>
     </resultMap>
 
+    <resultMap id="employeeMap" type="com.paas.app.entity.Employee">
+        <id property="id" column="id" jdbcType="BIGINT"/>
+        <result property="employeeId" column="employee_id" jdbcType="VARCHAR"/>
+        <result property="employeeName" column="employee_name" jdbcType="VARCHAR"/>
+        <result property="group" column="group" jdbcType="VARCHAR"/>
+        <result property="post" column="post" jdbcType="VARCHAR"/>
+        <result property="identityCard" column="identity_card" jdbcType="VARCHAR"/>
+        <result property="bank" column="bank" jdbcType="VARCHAR"/>
+        <result property="bankAccount" column="bank_account" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <select id="queryAllEmployee" resultMap="employeeMap">
+        select id, employee_id, employee_name,`group`, post,identity_card, bank, bank_account from employee
+        order by id;
+    </select>
+
     <!--查询学生-->
     <select id="queryStudentById" resultMap="studentMap">
         select id, name, gender,phone, create_time from tb_student where id = #{studentId}
@@ -21,5 +37,7 @@
    <select id="queryAllStudent" resultMap="studentMap">
        select id, name, gender,phone, create_time from tb_student
    </select>
+
+
 
 </mapper>

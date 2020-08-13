@@ -1,6 +1,5 @@
 package com.paas.app.exception;
 
-
 import com.paas.app.enums.ErrorsEnum;
 
 import java.io.Serializable;

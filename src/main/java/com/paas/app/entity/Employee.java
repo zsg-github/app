@@ -6,13 +6,17 @@ public class Employee implements Serializable {
 
     private static final long serialVersionUID = -2218847443881359359L;
     private int id;
+    private String employeeId;
     private String employeeName;
-    private String department;
     private String group;
     private String post;
     private String identityCard;
     private String bank;
     private String bankAccount;
+
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
 
     public int getId() {
         return id;
@@ -22,20 +26,20 @@ public class Employee implements Serializable {
         this.id = id;
     }
 
+    public String getEmployeeId() {
+        return employeeId;
+    }
+
+    public void setEmployeeId(String employeeId) {
+        this.employeeId = employeeId;
+    }
+
     public String getEmployeeName() {
         return employeeName;
     }
 
     public void setEmployeeName(String employeeName) {
         this.employeeName = employeeName;
-    }
-
-    public String getDepartment() {
-        return department;
-    }
-
-    public void setDepartment(String department) {
-        this.department = department;
     }
 
     public String getGroup() {
@@ -80,15 +84,15 @@ public class Employee implements Serializable {
 
     @Override
     public String toString() {
-        return "employee{" +
+        return "Employee{" +
                 "id=" + id +
+                ", employeeId='" + employeeId + '\'' +
                 ", employeeName='" + employeeName + '\'' +
-                ", department='" + department + '\'' +
                 ", group='" + group + '\'' +
                 ", post='" + post + '\'' +
                 ", identityCard='" + identityCard + '\'' +
                 ", bank='" + bank + '\'' +
-                ", bankAccount=" + bankAccount +
+                ", bankAccount='" + bankAccount + '\'' +
                 '}';
     }
 }
