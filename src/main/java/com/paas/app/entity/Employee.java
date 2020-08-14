@@ -8,7 +8,7 @@ public class Employee implements Serializable {
     private int id;
     private String employeeId;
     private String employeeName;
-    private String group;
+    private String department;
     private String post;
     private String identityCard;
     private String bank;
@@ -42,12 +42,12 @@ public class Employee implements Serializable {
         this.employeeName = employeeName;
     }
 
-    public String getGroup() {
-        return group;
+    public String getDepartment() {
+        return department;
     }
 
-    public void setGroup(String group) {
-        this.group = group;
+    public void setDepartment(String department) {
+        this.department = department;
     }
 
     public String getPost() {
@@ -88,7 +88,7 @@ public class Employee implements Serializable {
                 "id=" + id +
                 ", employeeId='" + employeeId + '\'' +
                 ", employeeName='" + employeeName + '\'' +
-                ", group='" + group + '\'' +
+                ", department='" + department + '\'' +
                 ", post='" + post + '\'' +
                 ", identityCard='" + identityCard + '\'' +
                 ", bank='" + bank + '\'' +

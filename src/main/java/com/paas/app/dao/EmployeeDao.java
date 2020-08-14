@@ -8,11 +8,13 @@ import org.springframework.stereotype.Repository;
 import java.util.ArrayList;
 
 @Repository
-public interface StudentDao {
+public interface EmployeeDao {
 
     Student queryStudentById(@Param("studentId") int studentId);
 
 
     ArrayList<Employee> queryAllEmployee();
 
+
+    int insertEmp(Employee employee);
 }

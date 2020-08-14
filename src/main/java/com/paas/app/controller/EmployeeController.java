@@ -1,10 +1,10 @@
 package com.paas.app.controller;
 
 import com.paas.app.dto.CommonResult;
-import com.paas.app.entity.Student;
+import com.paas.app.entity.Employee;
 import com.paas.app.enums.ErrorsEnum;
 import com.paas.app.exception.BusinessException;
-import com.paas.app.service.StudentService;
+import com.paas.app.service.EmployeeService;
 import com.paas.app.util.ResolvingExcelUtil;
 import com.paas.app.util.UploadExcelUtil;
 import org.slf4j.Logger;
@@ -23,33 +23,11 @@ import java.io.File;
 
 @RestController
 @RequestMapping("/admin")
-public class StudentController {
-    private static final Logger logger = LoggerFactory.getLogger(StudentService.class);
+public class EmployeeController {
+    private static final Logger logger = LoggerFactory.getLogger(EmployeeService.class);
 
     @Resource
-    StudentService studentService;
-    @RequestMapping(value = "/getStudentById", method = RequestMethod.POST)
-    private CommonResult getStudentInfoBy(int studentId){
-        CommonResult result;
-        try {
-            result = studentService.getStudentById(studentId);
-        } catch (BusinessException e) {
-            logger.error("/admin/getStudentInfoBy 异常，异常原因：" + e);
-            e.printStackTrace();
-            result = new CommonResult();
-            result.setState(Integer.parseInt(e.getErrCode()));
-            result.setSuccess(false);
-            result.setMessage(e.getMessage());
-        } catch (Exception e) {
-            logger.error("/admin/getStudentInfoBy 底层处理异常，异常原因", e.getMessage());
-            e.printStackTrace();
-            result = new CommonResult();
-            result.setState(ErrorsEnum.COMMON_ERROR.getErrorCode());
-            result.setSuccess(false);
-            result.setMessage("系统内部错误");
-        }
-        return result;
-    }
+    EmployeeService employeeService;
 
     @RequestMapping(value = "/uploadFile", method = RequestMethod.POST)
     public void uploadFile(@RequestParam(value = "fileinfo", required = false) MultipartFile file, HttpServletRequest request, HttpServletResponse response) {
@@ -67,16 +45,41 @@ public class StudentController {
     private CommonResult getExcel(){
         CommonResult result;
         try {
-            result = studentService.queryAllStudent();
+            result = employeeService.queryAllEmployee();
         } catch (BusinessException e) {
-            logger.error("/admin/getStudentInfoBy 异常，异常原因：" + e);
+            logger.error("/admin/getExcelFile 异常，异常原因：" + e);
             e.printStackTrace();
             result = new CommonResult();
             result.setState(Integer.parseInt(e.getErrCode()));
             result.setSuccess(false);
             result.setMessage(e.getMessage());
         } catch (Exception e) {
-            logger.error("/admin/getStudentInfoBy 底层处理异常，异常原因", e.getMessage());
+            logger.error("/admin/getExcelFile 底层处理异常，异常原因", e.getMessage());
+            e.printStackTrace();
+            result = new CommonResult();
+            result.setState(ErrorsEnum.COMMON_ERROR.getErrorCode());
+            result.setSuccess(false);
+            result.setMessage("系统内部错误");
+        }
+        return result;
+
+
+    }
+
+    @RequestMapping(value = "/addEmployee", method = RequestMethod.POST)
+    private CommonResult addEmployee(Employee employee){
+        CommonResult result;
+        try {
+            result = employeeService.addEmployee(employee);
+        } catch (BusinessException e) {
+            logger.error("/admin/ddEmployee 异常，异常原因：" + e);
+            e.printStackTrace();
+            result = new CommonResult();
+            result.setState(Integer.parseInt(e.getErrCode()));
+            result.setSuccess(false);
+            result.setMessage(e.getMessage());
+        } catch (Exception e) {
+            logger.error("/admin/addEmployee 底层处理异常，异常原因", e.getMessage());
             e.printStackTrace();
             result = new CommonResult();
             result.setState(ErrorsEnum.COMMON_ERROR.getErrorCode());

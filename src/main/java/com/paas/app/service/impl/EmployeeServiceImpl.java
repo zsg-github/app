@@ -1,12 +1,12 @@
 package com.paas.app.service.impl;
 
-import com.paas.app.dao.StudentDao;
+import com.paas.app.dao.EmployeeDao;
 import com.paas.app.dto.CommonResult;
 import com.paas.app.entity.Employee;
 import com.paas.app.entity.Student;
 import com.paas.app.enums.ErrorsEnum;
 import com.paas.app.exception.BusinessException;
-import com.paas.app.service.StudentService;
+import com.paas.app.service.EmployeeService;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
@@ -14,15 +14,10 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import sun.util.calendar.BaseCalendar;
-import sun.util.calendar.LocalGregorianCalendar;
 
 import javax.annotation.Resource;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -32,42 +27,22 @@ import java.util.Map;
 import static java.time.format.DateTimeFormatter.ofPattern;
 
 @Service
-public class StudentServiceImpl implements StudentService {
-    private static final Logger logger = LoggerFactory.getLogger(StudentServiceImpl.class);
+public class EmployeeServiceImpl implements EmployeeService {
+    private static final Logger logger = LoggerFactory.getLogger(EmployeeServiceImpl.class);
     @Resource
-    StudentDao studentDao;
+    EmployeeDao employeeDao;
 
     @Override
-    public CommonResult getStudentById(int studentId) throws Exception {
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        Student student = studentDao.queryStudentById(studentId);
-        //如果查询结果为空，抛出异常
-        if (student == null) {
-            logger.error("学生不存在");
-            BusinessException.throwMessage(ErrorsEnum.OBJECT_NULL);
-        }
-        //封装学生信息到Map中
-        Map<String, Object> modelMap = new HashMap<>();
-        modelMap.put("studentId", student.getId());
-        modelMap.put("studentName", student.getStudentName());
-        modelMap.put("gender", student.getGender());
-        modelMap.put("phone", student.getPhone());
-        modelMap.put("createTime", dateTimeFormatter.format(student.getCreateTime()));
-
-        //封装返回体
-        CommonResult resultModel = new CommonResult();
-        resultModel.setState(ErrorsEnum.SUCCESS.getErrorCode());
-        resultModel.setSuccess(true);
-        resultModel.setMessage(ErrorsEnum.SUCCESS.getMessage());
-        resultModel.addAttribute("student", modelMap);
-        return resultModel;
-    }
-
-    @Override
-    public CommonResult queryAllStudent() throws Exception {
+    public CommonResult queryAllEmployee() throws Exception {
         DateTimeFormatter df = ofPattern("yyyy-MM-dd HH:mm:ss");
         //查询有多少条数据
-        ArrayList<Employee> arrayList = studentDao.queryAllEmployee();
+        ArrayList<Employee> arrayList = employeeDao.queryAllEmployee();
+        //如果查询结果为空，抛出异常
+        if (arrayList == null  || arrayList.size() == 0) {
+            logger.error("员工信息不存在");
+            BusinessException.throwMessage(ErrorsEnum.OBJECT_NULL);
+        }
+
         //第一步：创建一个workbook对应一个Excel文件
         HSSFWorkbook workbook = new HSSFWorkbook();
         //第二部：在workbook中创建一个sheet对应Excel中的sheet
@@ -88,7 +63,7 @@ public class StudentServiceImpl implements StudentService {
             //创建单元格设值
             row1.createCell(0).setCellValue(arrayList.get(i).getEmployeeId());
             row1.createCell(1).setCellValue(arrayList.get(i).getEmployeeName());
-            row1.createCell(2).setCellValue(arrayList.get(i).getGroup());
+            row1.createCell(2).setCellValue(arrayList.get(i).getDepartment());
             row1.createCell(3).setCellValue(arrayList.get(i).getPost());
             row1.createCell(4).setCellValue(arrayList.get(i).getIdentityCard());
             row1.createCell(5).setCellValue(arrayList.get(i).getBank());
@@ -109,7 +84,6 @@ public class StudentServiceImpl implements StudentService {
             e.printStackTrace();
         }
 
-
         //封装返回体
         CommonResult resultModel = new CommonResult();
         resultModel.setState(ErrorsEnum.SUCCESS.getErrorCode());
@@ -117,5 +91,27 @@ public class StudentServiceImpl implements StudentService {
         resultModel.setMessage(ErrorsEnum.SUCCESS.getMessage());
         resultModel.addAttribute("downLoadPath", url);
         return resultModel;
+    }
+
+    @Override
+    public CommonResult addEmployee(Employee employee) throws Exception {
+        if (employee == null){
+            logger.error("员工信息不存在");
+            BusinessException.throwMessage(ErrorsEnum.OBJECT_NULL);
+        }
+        int effectNum = employeeDao.insertEmp(employee);
+
+        if(effectNum <= 0){
+            logger.error("添加员工失败");
+            BusinessException.throwMessage(ErrorsEnum.CREATE_ERROR);
+        }
+
+        //封装返回体
+        CommonResult resultModel = new CommonResult();
+        resultModel.setState(ErrorsEnum.SUCCESS.getErrorCode());
+        resultModel.setSuccess(true);
+        resultModel.setMessage(ErrorsEnum.SUCCESS.getMessage());
+        return resultModel;
+
     }
 }

@@ -3,21 +3,13 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!--映射文件要与相对应的mapper接口通过namespace属性进行关联-->
-<mapper namespace="com.paas.app.dao.StudentDao">
-
-    <resultMap id="studentMap" type="com.paas.app.entity.Student">
-        <id property="id" column="id" jdbcType="BIGINT"/>
-        <result property="studentName" column="name" jdbcType="VARCHAR"/>
-        <result property="gender" column="gender" jdbcType="VARCHAR"/>
-        <result property="phone" column="phone" jdbcType="VARCHAR"/>
-        <result property="createTime" column="create_time" jdbcType="DATE"/>
-    </resultMap>
+<mapper namespace="com.paas.app.dao.EmployeeDao">
 
     <resultMap id="employeeMap" type="com.paas.app.entity.Employee">
         <id property="id" column="id" jdbcType="BIGINT"/>
         <result property="employeeId" column="employee_id" jdbcType="VARCHAR"/>
         <result property="employeeName" column="employee_name" jdbcType="VARCHAR"/>
-        <result property="group" column="group" jdbcType="VARCHAR"/>
+        <result property="department" column="department" jdbcType="VARCHAR"/>
         <result property="post" column="post" jdbcType="VARCHAR"/>
         <result property="identityCard" column="identity_card" jdbcType="VARCHAR"/>
         <result property="bank" column="bank" jdbcType="VARCHAR"/>
@@ -25,18 +17,16 @@
     </resultMap>
 
     <select id="queryAllEmployee" resultMap="employeeMap">
-        select id, employee_id, employee_name,`group`, post,identity_card, bank, bank_account from employee
+        select id, employee_id, employee_name,department, post,identity_card, bank, bank_account from employee
         order by id;
     </select>
 
-    <!--查询学生-->
-    <select id="queryStudentById" resultMap="studentMap">
-        select id, name, gender,phone, create_time from tb_student where id = #{studentId}
-    </select>
+    <insert id="insertEmp">
+        insert into employee(employee_id,employee_name,department,post,identity_card,bank,bank_account
+         values (employeeId,employeeName,department,post,identityCard,bank,bankAccount);
+    </insert>
 
-   <select id="queryAllStudent" resultMap="studentMap">
-       select id, name, gender,phone, create_time from tb_student
-   </select>
+
 
 
 
