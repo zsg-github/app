@@ -72,8 +72,8 @@ public class EmployeeServiceImpl implements EmployeeService {
         //将文件保存到指定的位置
         Calendar now = Calendar.getInstance();
         String flag = now.get(Calendar.DAY_OF_MONTH) +"" + now.get(Calendar.HOUR_OF_DAY) + "" + now.get(Calendar.MINUTE) + "" + now.get(Calendar.SECOND);
-        String path = "/www/server/tomcat/webapps/excel/employee" + flag + ".xls";
-        String url = "http:121.41.228.122:8080/excel/employee" + flag + ".xls";
+        String path = "usr/local/excel/employee" + flag + ".xls";
+        String url = "http//:121.41.228.122/excel/employee" + flag + ".xls";
         //String p = "D:/emp.xls";
         try {
             FileOutputStream fos = new FileOutputStream(path);
